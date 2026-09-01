@@ -1,0 +1,74 @@
+{% load static %}
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div class="footer-col footer-brand">
+            <a href="{% url 'home' %}" class="d-flex align-items-center text-decoration-none mb-3">
+                <div class="logo-badge-wrapper me-2 rounded-circle p-1 bg-dark border border-warning shadow-sm d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; min-width: 60px; min-height: 60px; border-radius: 50% !important; overflow: hidden !important;">
+                    <img src="{% static 'images/logo/logo.png' %}?v=2" alt="{{ site_settings.site_name }} Logo" style="width: 50px; height: 50px; object-fit: contain; border-radius: 50% !important;">
+                </div>
+                <div>
+                    <h4 class="fw-bold mb-0 text-white tracking-tight" style="font-family: var(--font-heading); font-size: 1.25rem;">{{ site_settings.site_name }}</h4>
+                    <small class="text-white-50 d-block uppercase-sm" style="font-size: 0.65rem; letter-spacing: 0.5px;">Where Dreams Find an Address</small>
+                </div>
+            </a>
+            <p class="footer-desc">Your premier real estate consultancy across Pune and surrounding high-growth regions. Handpicked clear-title properties for homeowners and investors.</p>
+            <div class="social-links">
+                <a href="#" aria-label="Facebook">🌐</a>
+                <a href="https://www.instagram.com/real.eastateconsultant?igsi=ZmdjYTVhdmdncXUz" aria-label="Instagram">📸</a>
+                <!-- <a href="#" aria-label="Twitter">🐦</a> -->
+                <a href="https://www.linkedin.com/in/dnyaneshwar-melage-53a01a388?utm_source=share_via&utm_content=profile&utm_medium=member_android" aria-label="LinkedIn">💼</a>
+            </div>
+        </div>
+
+        <div class="footer-col">
+            <h4 class="footer-title">Quick Links</h4>
+            <ul class="footer-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'property_list' %}">Explore Properties</a></li>
+                <li><a href="{% url 'about' %}">About Us</a></li>
+                <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                {% if user.is_authenticated and user.is_staff %}
+                <li><a href="{% url 'dashboard' %}">Admin Dashboard</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4 class="footer-title">Property Types</h4>
+            <ul class="footer-links">
+                <li><a href="{% url 'property_list' %}?property_type=Villa">Luxury Villas</a></li>
+                <li><a href="{% url 'property_list' %}?property_type=Apartment">Modern Apartments</a></li>
+                <li><a href="{% url 'property_list' %}?property_type=House">Independent Houses</a></li>
+                <li><a href="{% url 'property_list' %}?property_type=Plot">Residential Plots</a></li>
+                <li><a href="{% url 'property_list' %}?property_type=Commercial">Commercial Spaces</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4 class="footer-title">Get In Touch</h4>
+            <ul class="footer-contact">
+                <li><span class="icon">📍</span>Pune</li>
+                <li><span class="icon">📞</span>+91 7083150302</li>
+                <li>
+                    <span class="icon">💬</span>
+                    <a href="https://wa.me/917083150302?text=Hello%20Perfect%20Homes%2C%20I%20am%20contacting%20you%20from%20your%20website." target="_blank" rel="noopener" class="text-success fw-bold">
+                        WhatsApp: +91 7083150302
+                    </a>
+                </li>
+                <li><span class="icon">✉️</span>dhairyashilmelage@gmail.com</li>
+                <li><span class="icon">⏰</span> Mon - Sat: 9:00 AM - 7:00 PM</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container footer-bottom-content">
+            <p>&copy; {% now "Y" %} {{ site_settings.site_name }}. All rights reserved.</p>
+            <div class="footer-bottom-links d-flex align-items-center gap-3">
+                <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+                <a href="{% url 'terms_of_service' %}">Terms of Service</a>
+                <a href="{% url 'dashboard' %}" class="text-white-50 opacity-50 hover-opacity-100 small text-decoration-none" style="font-size: 0.75rem;" title="Staff Dashboard Portal">🔒 Dashboard</a>
+            </div>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Login | {{ site_settings.site_name }} Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <style>
+        .login-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 20px;
+        }
+        .login-card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        .login-logo .highlight { color: #d97706; }
+        .login-subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #1e293b;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background-color: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-login:hover {
+            background-color: #1d4ed8;
+        }
+        .login-alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 24px;
+            color: #64748b;
+            font-size: 0.9rem;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover { color: #2563eb; }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">🏢 {{ site_settings.site_name }}</div>
+                <p class="login-subtitle">Staff & Administrative Dashboard Portal</p>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                <div class="login-alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" action="{% url 'dashboard_login' %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next_url }}">
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-input" placeholder="Enter staff username" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="Enter password" required>
+                </div>
+
+                <button type="submit" class="btn-login">🔐 Secure Staff Login</button>
+            </form>
+
+            <a href="{% url 'home' %}" class="back-link">← Return to Public Site</a>
+        </div>
+    </div>
+</body>
+</html>

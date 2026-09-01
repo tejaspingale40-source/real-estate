@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ property.title }} | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="property-detail-header bg-light border-bottom">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="{% url 'home' %}">Home</a> &gt; 
+            <a href="{% url 'property_list' %}">Properties</a> &gt; 
+            <span>{{ property.title }}</span>
+        </div>
+        <div class="detail-title-row">
+            <div>
+                <h1 class="property-detail-title">{{ property.title }}</h1>
+                <p class="property-detail-location">📍 {{ property.address }}, {{ property.location }}</p>
+            </div>
+            <div class="property-detail-price-box">
+                <span class="price-tag">₹{{ property.price|floatformat:0 }}</span>
+                <span class="badge badge-status badge-{{ property.status|lower }}">{{ property.status }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container section">
+    <div class="detail-layout-grid">
+        <div class="detail-main-content">
+            <!-- IMAGE GALLERY -->
+            <div class="gallery-wrapper card shadow-sm">
+                <div class="main-image-container">
+                    {% if images %}
+                        <img id="mainGalleryImage" src="{{ images.0.image.url }}" alt="{{ property.title }}" class="main-gallery-img">
+                    {% else %}
+                        <img src="{% static 'images/banners/property_placeholder.jpg' %}" alt="{{ property.title }}" class="main-gallery-img">
+                    {% endif %}
+                </div>
+                
+                {% if images|length > 1 %}
+                <div class="gallery-thumbnails" id="galleryThumbnails">
+                    {% for img in images %}
+                    <div class="thumbnail-item {% if forloop.first %}active{% endif %}" onclick="switchMainImage('{{ img.image.url }}', this)">
+                        <img src="{{ img.image.url }}" alt="Thumbnail {{ forloop.counter }}">
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- KEY SPECIFICATIONS GRID -->
+            <div class="specs-grid card shadow-sm margin-top-md">
+                <div class="spec-item">
+                    <span class="spec-label">Property Type</span>
+                    <span class="spec-value">🏢 {{ property.property_type }}</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Purpose</span>
+                    <span class="spec-value">🏷️ For {{ property.purpose }}</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Bedrooms</span>
+                    <span class="spec-value">🛏️ {{ property.bedrooms }} Beds</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Bathrooms</span>
+                    <span class="spec-value">🚿 {{ property.bathrooms }} Baths</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Carpet Area</span>
+                    <span class="spec-value">📐 {{ property.area|floatformat:0 }} sq.ft</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Parking</span>
+                    <span class="spec-value">🚗 {% if property.parking %}Available (Yes){% else %}No{% endif %}</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Furnishing</span>
+                    <span class="spec-value">🪑 {{ property.furnished }}</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Status</span>
+                    <span class="spec-value">📌 {{ property.status }}</span>
+                </div>
+            </div>
+
+            <!-- PROPERTY DESCRIPTION -->
+            <div class="content-block card shadow-sm margin-top-md">
+                <h2 class="block-title">Description</h2>
+                <div class="description-text">
+                    {{ property.description|linebreaks }}
+                </div>
+            </div>
+
+            <!-- AMENITIES -->
+            {% if amenities %}
+            <div class="content-block card shadow-sm margin-top-md">
+                <h2 class="block-title">Amenities & Features</h2>
+                <div class="amenities-grid">
+                    {% for amenity in amenities %}
+                    <div class="amenity-item">
+                        <span class="amenity-icon">✨</span>
+                        <span class="amenity-name">{{ amenity.name }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- PROPERTY VIDEO -->
+            {% if videos %}
+            <div class="content-block card shadow-sm margin-top-md">
+                <h2 class="block-title">Property Video Tour</h2>
+                {% for vid in videos %}
+                <div class="video-player-box margin-bottom-sm">
+                    <h4>{{ vid.title|default:"Walkthrough Video" }}</h4>
+                    <video controls width="100%" class="rounded-video">
+                        <source src="{{ vid.video.url }}" type="video/mp4">
+                        Your browser does not support HTML video playback.
+                    </video>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- LOCATION & GOOGLE MAPS INTEGRATION -->
+            <div class="content-block card shadow-sm margin-top-md">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="block-title mb-0">📍 Property Location & Map</h2>
+                    <a href="https://www.google.com/maps/search/?api=1&query={{ property.address|urlencode }},{{ property.location|urlencode }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary fw-semibold rounded-3">
+                        Open in Google Maps <i class="bi bi-box-arrow-up-right ms-1"></i>
+                    </a>
+                </div>
+                <p class="text-muted mb-3"><i class="bi bi-geo-alt-fill text-danger me-1"></i> <strong>Address:</strong> {{ property.address }}, {{ property.location }}</p>
+
+                <!-- GOOGLE MAPS EMBED -->
+                <div class="google-map-wrapper border rounded-4 overflow-hidden shadow-sm bg-light">
+                    <div class="ratio ratio-16x9">
+                        <iframe 
+                            src="https://maps.google.com/maps?q={{ property.address|urlencode }},{{ property.location|urlencode }}&t=&z=14&ie=UTF8&iwloc=&output=embed" 
+                            width="100%" 
+                            height="400" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIDEBAR CONTACT AGENT -->
+        <div class="detail-sidebar">
+            <div class="card shadow-sm sticky-sidebar">
+                <h3 class="card-title text-center margin-bottom-sm">Contact Agent / Schedule Visit</h3>
+                <p class="text-muted text-center margin-bottom-md">Interested in this property? Send an enquiry directly to our sales executive.</p>
+                
+                <form method="POST" action="{% url 'property_detail' slug=property.slug %}" class="agent-enquiry-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="property" value="{{ property.id }}">
+                    
+                    <div class="form-group margin-bottom-sm">
+                        <label>Your Name *</label>
+                        {{ enquiry_form.name }}
+                    </div>
+                    
+                    <div class="form-group margin-bottom-sm">
+                        <label>Phone Number *</label>
+                        {{ enquiry_form.phone }}
+                    </div>
+                    
+                    <div class="form-group margin-bottom-sm">
+                        <label>Email Address *</label>
+                        {{ enquiry_form.email }}
+                    </div>
+                    
+                    <div class="form-group margin-bottom-md">
+                        <label>Message *</label>
+                        {{ enquiry_form.message }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">📩 Send Enquiry</button>
+                    
+                    <a href="https://wa.me/917083150302?text=Hello%20Perfect%20Homes%2C%20I%20am%20interested%20in%20the%20property%3A%20{{ property.title|urlencode }}%20(ID%3A%20{{ property.id }})." target="_blank" rel="noopener" class="btn btn-whatsapp btn-block margin-top-sm">
+                        <i class="bi bi-whatsapp"></i> Chat on WhatsApp
+                    </a>
+
+                    <a href="tel:+917083150302" class="btn btn-outline btn-block margin-top-sm">📞 Call +91 7083150302</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/gallery.js' %}"></script>
+{% endblock %}

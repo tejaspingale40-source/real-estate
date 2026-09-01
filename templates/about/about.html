@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container text-center">
+        <h1 class="page-title">About {{ site_settings.site_name }}</h1>
+        <p class="page-subtitle">{{ site_settings.about_subtitle }}</p>
+    </div>
+</div>
+
+<div class="container section">
+    <div class="grid-2-col align-center">
+        <div class="about-hero-img position-relative text-center">
+            <div class="position-relative d-inline-block rounded-4 overflow-hidden shadow-lg border border-warning border-3" style="max-width: 380px;">
+                <img src="{% static 'images/banners/founder.jpg' %}" alt="{{ site_settings.about_founder_name }} - Founder" class="img-fluid w-100" style="object-fit: cover; object-position: top center; max-height: 480px;">
+                <div class="position-absolute bottom-0 start-0 end-0 bg-dark bg-opacity-75 text-white p-3 text-center border-top border-warning">
+                    <h5 class="fw-bold text-warning mb-0" style="font-family: var(--font-heading);">{{ site_settings.about_founder_name }}</h5>
+                    <small class="text-white-50 uppercase-sm" style="font-size: 0.75rem; letter-spacing: 1px;">Founder & Managing Director</small>
+                </div>
+            </div>
+        </div>
+        <div class="about-hero-text">
+            <span class="section-subtitle">Our Leadership & Vision</span>
+            <h2 class="section-title mb-3">{{ site_settings.about_vision_heading }}</h2>
+            <p class="lead text-dark fw-medium">{{ site_settings.about_vision_text }}</p>
+            <div class="p-3 bg-light border-start border-warning border-4 rounded-3 my-4">
+                <h4 class="fw-bold text-primary mb-1" style="font-family: var(--font-heading);">"{{ site_settings.about_quote }}"</h4>
+                <small class="text-muted">— {{ site_settings.about_founder_name }}, Founder</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="section bg-light">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-subtitle">Core Philosophy</span>
+            <h2>Our Key Pillars</h2>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card white-bg">
+                <div class="feature-icon">🔍</div>
+                <h3>Uncompromising Verification</h3>
+                <p>Every listing on our platform undergoes stringent physical inspection and title check prior to listing.</p>
+            </div>
+            <div class="feature-card white-bg">
+                <div class="feature-icon">🤝</div>
+                <h3>Client-Centric Integrity</h3>
+                <p>We prioritize long-term client trust above all else, providing objective guidance for buyers and investors.</p>
+            </div>
+            <div class="feature-card white-bg">
+                <div class="feature-icon">🚀</div>
+                <h3>Modern Technology</h3>
+                <p>From high-definition video walkthroughs to real-time property filtering, we make property search effortless.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

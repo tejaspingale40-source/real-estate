@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | PERFECT HOMES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body class="dashboard-body">
+
+    <div class="dashboard-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <a href="{% url 'home' %}" class="sidebar-logo text-decoration-none d-flex align-items-center gap-2">
+                    <img src="{% static 'images/logo/logo.png' %}" alt="{{ site_settings.site_name }} Logo" style="width: 44px; height: 44px; object-fit: contain; background: #0f172a; border-radius: 50%; border: 1px solid #d99b26; padding: 2px;">
+                    <span class="logo-text fw-bold text-warning" style="font-family: var(--font-heading);">{{ site_settings.site_name }}</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <li class="menu-item active">
+                        <a href="{% url 'dashboard' %}"><span class="icon">📊</span> Dashboard</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'dashboard_properties' %}"><span class="icon">🏢</span> Properties</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'dashboard_property_add' %}"><span class="icon">➕</span> Add Property</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'dashboard_enquiries' %}"><span class="icon">📩</span> Enquiries</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'dashboard_site_settings' %}"><span class="icon">⚙️</span> Site & Page Settings</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'admin:index' %}"><span class="icon">🛠️</span> Django Admin</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'home' %}"><span class="icon">🌐</span> Public Site</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'dashboard_logout' %}"><span class="icon">🚪</span> Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- MAIN DASHBOARD CONTENT -->
+        <main class="dashboard-main">
+            <!-- TOPBAR -->
+            <header class="dashboard-topbar">
+                <h2 class="topbar-title">Real Estate Admin Dashboard</h2>
+                <div class="topbar-actions">
+                    <a href="{% url 'dashboard_property_add' %}" class="btn btn-primary btn-sm">+ Add New Property</a>
+                </div>
+            </header>
+
+            {% if messages %}
+            <div class="toast-container">
+                {% for message in messages %}
+                <div class="toast toast-{{ message.tags }}">
+                    <span>{{ message }}</span>
+                    <button onclick="this.parentElement.remove()">&times;</button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="dashboard-content">
+                <!-- STATS CARDS GRID -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon icon-blue">🏢</div>
+                        <div class="stat-info">
+                            <span class="stat-value">{{ total_properties }}</span>
+                            <span class="stat-label">Total Properties</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-green">✅</div>
+                        <div class="stat-info">
+                            <span class="stat-value">{{ available_properties }}</span>
+                            <span class="stat-label">Available / Published</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-purple">🏷️</div>
+                        <div class="stat-info">
+                            <span class="stat-value">{{ sold_properties }}</span>
+                            <span class="stat-label">Properties Sold</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-orange">🔑</div>
+                        <div class="stat-info">
+                            <span class="stat-value">{{ rented_properties }}</span>
+                            <span class="stat-label">Properties Rented</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-gold">📩</div>
+                        <div class="stat-info">
+                            <span class="stat-value">{{ new_enquiries }}</span>
+                            <span class="stat-label">New Enquiries</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECENT ENQUIRIES & RECENT PROPERTIES TABLES -->
+                <div class="dashboard-tables-grid margin-top-lg">
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Recent Customer Enquiries</h3>
+                            <a href="{% url 'dashboard_enquiries' %}" class="link-sm">View All &rarr;</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Client Name</th>
+                                        <th>Phone</th>
+                                        <th>Property</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for enq in recent_enquiries %}
+                                    <tr>
+                                        <td><strong>{{ enq.name }}</strong></td>
+                                        <td>{{ enq.phone }}</td>
+                                        <td>{{ enq.property.title|default:"General Inquiry" }}</td>
+                                        <td><span class="badge-status status-{{ enq.status|slugify }}">{{ enq.status }}</span></td>
+                                        <td>{{ enq.created_at|date:"M d, Y" }}</td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr><td colspan="5" class="text-muted text-center">No enquiries received yet.</td></tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <h3>Recently Added Properties</h3>
+                            <a href="{% url 'dashboard_properties' %}" class="link-sm">View All &rarr;</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="dash-table">
+                                <thead>
+                                    <tr>
+                                        <th>Property</th>
+                                        <th>Price</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for prop in recent_properties %}
+                                    <tr>
+                                        <td><strong>{{ prop.title }}</strong><br><small class="text-muted">{{ prop.location }}</small></td>
+                                        <td>₹{{ prop.price|floatformat:0 }}</td>
+                                        <td>{{ prop.property_type }}</td>
+                                        <td><span class="badge-status status-{{ prop.status|lower }}">{{ prop.status }}</span></td>
+                                        <td>
+                                            <a href="{% url 'dashboard_property_edit' pk=prop.id %}" class="btn-icon" title="Edit">✏️</a>
+                                            <a href="{% url 'property_detail' slug=prop.slug %}" target="_blank" class="btn-icon" title="View">👁️</a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr><td colspan="5" class="text-muted text-center">No properties added yet.</td></tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>

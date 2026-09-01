@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Properties | LuxeHaven Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body class="dashboard-body">
+
+    <div class="dashboard-wrapper">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <a href="{% url 'home' %}" class="sidebar-logo text-decoration-none d-flex align-items-center gap-2">
+                    <img src="{% static 'images/logo/logo.png' %}" alt="{{ site_settings.site_name }} Logo" style="width: 38px; height: 38px; object-fit: contain; background: #0f172a; border-radius: 8px; border: 1px solid #d99b26; padding: 2px;">
+                    <span class="logo-text fw-bold text-warning" style="font-family: var(--font-heading);">{{ site_settings.site_name }}</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <li class="menu-item"><a href="{% url 'dashboard' %}"><span class="icon">📊</span> Dashboard</a></li>
+                    <li class="menu-item active"><a href="{% url 'dashboard_properties' %}"><span class="icon">🏢</span> Properties</a></li>
+                    <li class="menu-item"><a href="{% url 'dashboard_property_add' %}"><span class="icon">➕</span> Add Property</a></li>
+                    <li class="menu-item">
+                        <a href="{% url 'dashboard_enquiries' %}"><span class="icon">📩</span> Enquiries</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'dashboard_site_settings' %}"><span class="icon">⚙️</span> Site & Page Settings</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'admin:index' %}"><span class="icon">🛠️</span> Django Admin</a>
+                    </li>
+                    <li class="menu-item"><a href="{% url 'home' %}"><span class="icon">🌐</span> Public Site</a></li>
+                    <li class="menu-item"><a href="{% url 'dashboard_logout' %}"><span class="icon">🚪</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-topbar">
+                <h2 class="topbar-title">Property Inventory Management</h2>
+                <a href="{% url 'dashboard_property_add' %}" class="btn btn-primary btn-sm">+ Add Property</a>
+            </header>
+
+            {% if messages %}
+            <div class="toast-container">
+                {% for message in messages %}
+                <div class="toast toast-{{ message.tags }}">
+                    <span>{{ message }}</span>
+                    <button onclick="this.parentElement.remove()">&times;</button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="dashboard-content">
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h3>All Registered Properties ({{ properties.count }})</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>Thumbnail</th>
+                                    <th>Title & Location</th>
+                                    <th>Price</th>
+                                    <th>Type / Purpose</th>
+                                    <th>Specs</th>
+                                    <th>Featured</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for prop in properties %}
+                                <tr>
+                                    <td>
+                                        {% if prop.cover_image %}
+                                        <img src="{{ prop.cover_image.image.url }}" alt="{{ prop.title }}" class="table-thumb">
+                                        {% else %}
+                                        <div class="table-thumb-placeholder">No Img</div>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <strong>{{ prop.title }}</strong>
+                                        <br><small class="text-muted">📍 {{ prop.location }}</small>
+                                    </td>
+                                    <td><strong>₹{{ prop.price|floatformat:0 }}</strong></td>
+                                    <td>{{ prop.property_type }} <br><span class="text-muted">For {{ prop.purpose }}</span></td>
+                                    <td>{{ prop.bedrooms }} Bed | {{ prop.bathrooms }} Bath<br>{{ prop.area|floatformat:0 }} sq.ft</td>
+                                    <td>{% if prop.featured %}<span class="badge-featured">Featured</span>{% else %}-{% endif %}</td>
+                                    <td><span class="badge-status status-{{ prop.status|lower }}">{{ prop.status }}</span></td>
+                                    <td class="actions-cell">
+                                        <a href="{% url 'property_detail' slug=prop.slug %}" target="_blank" class="btn-action view" title="View Public Page">👁️</a>
+                                        <a href="{% url 'dashboard_property_edit' pk=prop.id %}" class="btn-action edit" title="Edit">✏️</a>
+                                        <a href="{% url 'dashboard_property_delete' pk=prop.id %}" class="btn-action delete" title="Delete">🗑️</a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="8" class="text-center text-muted">No properties found. Click "+ Add Property" to create one.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

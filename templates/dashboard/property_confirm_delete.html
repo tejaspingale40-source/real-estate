@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Property | LuxeHaven Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body class="dashboard-body">
+
+    <div class="dashboard-wrapper">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <a href="{% url 'home' %}" class="sidebar-logo text-decoration-none d-flex align-items-center gap-2">
+                    <img src="{% static 'images/logo/logo.png' %}" alt="{{ site_settings.site_name }} Logo" style="width: 38px; height: 38px; object-fit: contain; background: #0f172a; border-radius: 8px; border: 1px solid #d99b26; padding: 2px;">
+                    <span class="logo-text fw-bold text-warning" style="font-family: var(--font-heading);">{{ site_settings.site_name }}</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <li class="menu-item"><a href="{% url 'dashboard' %}"><span class="icon">📊</span> Dashboard</a></li>
+                    <li class="menu-item active"><a href="{% url 'dashboard_properties' %}"><span class="icon">🏢</span> Properties</a></li>
+                    <li class="menu-item"><a href="{% url 'dashboard_property_add' %}"><span class="icon">➕</span> Add Property</a></li>
+                    <li class="menu-item"><a href="{% url 'dashboard_enquiries' %}"><span class="icon">📩</span> Enquiries</a></li>
+                    <li class="menu-item"><a href="{% url 'admin:index' %}"><span class="icon">⚙️</span> Django Admin</a></li>
+                    <li class="menu-item"><a href="{% url 'home' %}"><span class="icon">🌐</span> Public Site</a></li>
+                    <li class="menu-item"><a href="{% url 'dashboard_logout' %}"><span class="icon">🚪</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-topbar">
+                <h2 class="topbar-title">Confirm Delete</h2>
+            </header>
+
+            <div class="dashboard-content align-center-flex">
+                <div class="dash-card delete-card">
+                    <div class="delete-icon">⚠️</div>
+                    <h3>Are you sure you want to delete this property?</h3>
+                    <p class="delete-warning">Property: <strong>"{{ property.title }}"</strong> (₹{{ property.price|floatformat:0 }} - {{ property.location }})</p>
+                    <p class="text-muted">This action will permanently delete all associated images, videos, and enquiries. This action cannot be undone.</p>
+
+                    <form method="POST" class="margin-top-lg">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-lg">🗑️ Yes, Delete Property</button>
+                        <a href="{% url 'dashboard_properties' %}" class="btn btn-secondary btn-lg">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

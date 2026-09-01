@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Terms of Service | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="bg-light py-5">
+    <div class="container my-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-header bg-dark text-white p-4 p-md-5 border-bottom border-warning border-3">
+                        <span class="badge bg-warning text-dark fw-bold uppercase-sm mb-2 px-3 py-2">Terms & Conditions</span>
+                        <h1 class="display-6 fw-bold mb-2" style="font-family: var(--font-heading);">Terms of Service</h1>
+                        <p class="text-white-50 mb-0">Effective Date: August 27, 2026 | Last Updated: August 2026</p>
+                    </div>
+                    
+                    <div class="card-body p-4 p-md-5 text-secondary fs-6 leading-relaxed">
+                        
+                        <div class="mb-4">
+                            <h3 class="fw-bold text-dark h4 border-start border-4 border-warning ps-3 mb-3">1. Acceptance of Terms</h3>
+                            <p>By accessing, browsing, or using the <strong>{{ site_settings.site_name }}</strong> website ("Website") or engaging our real estate consultancy services, you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please refrain from using our services.</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h3 class="fw-bold text-dark h4 border-start border-4 border-warning ps-3 mb-3">2. Scope of Services</h3>
+                            <p><strong>{{ site_settings.site_name }}</strong> operates as a premier real estate advisory and consultancy firm based in Pune, India. We facilitate property listings, buyer-seller matching, developer project assistance, property valuation guidance, and site visit arrangements for residential, commercial, and land properties.</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h3 class="fw-bold text-dark h4 border-start border-4 border-warning ps-3 mb-3">3. Property Listings & Disclaimers</h3>
+                            <ul>
+                                <li class="mb-2"><strong>Accuracy of Information:</strong> While we endeavor to provide accurate details regarding pricing, plot dimensions, amenities, and availability, all property information displayed on the website is subject to confirmation and title verification.</li>
+                                <li class="mb-2"><strong>Independent Due Diligence:</strong> Property buyers and investors are strongly advised to independently verify property titles, legal permissions, RERA approvals, local municipal approvals, and physically inspect properties before entering into any financial transaction or agreement.</li>
+                                <li class="mb-2"><strong>Pricing Changes:</strong> Property valuations, developer prices, and listing rates are subject to change without prior notice based on owner/developer discretion or market conditions.</li>
+                            </ul>
+                        </div>
+
+                        <div class="mb-4">
+                            <h3 class="fw-bold text-dark h4 border-start border-4 border-warning ps-3 mb-3">4. User Responsibilities & Conduct</h3>
+                            <p>When interacting with our platform, you agree to:</p>
+                            <ul>
+                                <li>Provide truthful, accurate, and current contact details when submitting enquiries.</li>
+                                <li>Use the platform solely for legitimate real estate buying, selling, or leasing queries.</li>
+                                <li>Not engage in unauthorized scraping, automated data collection, or misrepresentation of properties listed on our site.</li>
+                            </ul>
+                        </div>
+
+                        <div class="mb-4">
+                            <h3 class="fw-bold text-dark h4 border-start border-4 border-warning ps-3 mb-3">5. Limitation of Liability</h3>
+                            <p>To the maximum extent permitted by applicable law, <strong>{{ site_settings.site_name }}</strong>, its consultants, and representatives shall not be liable for any direct, indirect, incidental, or consequential damages resulting from property transactions, delay in deal execution, or reliance on information presented on this website.</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h3 class="fw-bold text-dark h4 border-start border-4 border-warning ps-3 mb-3">6. Intellectual Property</h3>
+                            <p>All content, logos, property photography, text, branding assets, and layout designs on this website are the property of {{ site_settings.site_name }} and protected under Indian intellectual property laws. Reproduction without written consent is strictly prohibited.</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h3 class="fw-bold text-dark h4 border-start border-4 border-warning ps-3 mb-3">7. Governing Law & Jurisdiction</h3>
+                            <p>These Terms shall be governed by and construed in accordance with the laws of India. Any disputes or legal claims arising under or in connection with these Terms or your use of our services shall be subject to the exclusive jurisdiction of the competent courts in <strong>Pune, Maharashtra, India</strong>.</p>
+                        </div>
+
+                        <div class="p-4 bg-light rounded-3 border">
+                            <h4 class="fw-bold text-dark h5 mb-2">Questions Regarding Terms?</h4>
+                            <p class="mb-1">If you have any questions or require clarification regarding these Terms of Service, please contact us:</p>
+                            <ul class="list-unstyled mb-0">
+                                <li><strong>Phone / WhatsApp:</strong> +91 7083150302</li>
+                                <li><strong>Email:</strong> dhairyashilmelage@gmail.com</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

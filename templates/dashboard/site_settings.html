@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website & Content Settings | {{ site_settings.site_name }} Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body class="dashboard-body">
+
+    <div class="dashboard-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <a href="{% url 'home' %}" class="sidebar-logo text-decoration-none d-flex align-items-center gap-2">
+                    <img src="{% static 'images/logo/logo.png' %}" alt="{{ site_settings.site_name }} Logo" style="width: 38px; height: 38px; object-fit: contain; background: #0f172a; border-radius: 8px; border: 1px solid #d99b26; padding: 2px;">
+                    <span class="logo-text fw-bold text-warning" style="font-family: var(--font-heading);">{{ site_settings.site_name }}</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <li class="menu-item">
+                        <a href="{% url 'dashboard' %}"><span class="icon">📊</span> Dashboard</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'dashboard_properties' %}"><span class="icon">🏢</span> Properties</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'dashboard_property_add' %}"><span class="icon">➕</span> Add Property</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'dashboard_enquiries' %}"><span class="icon">📩</span> Enquiries</a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="{% url 'dashboard_site_settings' %}"><span class="icon">⚙️</span> Site & Page Settings</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'admin:index' %}"><span class="icon">🛠️</span> Django Admin</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'home' %}"><span class="icon">🌐</span> Public Site</a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'dashboard_logout' %}"><span class="icon">🚪</span> Logout</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- MAIN DASHBOARD CONTENT -->
+        <main class="dashboard-main">
+            <!-- TOPBAR -->
+            <header class="dashboard-topbar">
+                <h2 class="topbar-title">Manage Website Content (About & Contact Pages)</h2>
+                <div class="topbar-actions">
+                    <a href="{% url 'about' %}" target="_blank" class="btn btn-secondary btn-sm">👁️ Preview About</a>
+                    <a href="{% url 'contact' %}" target="_blank" class="btn btn-secondary btn-sm">👁️ Preview Contact</a>
+                </div>
+            </header>
+
+            {% if messages %}
+            <div class="toast-container">
+                {% for message in messages %}
+                <div class="toast toast-{{ message.tags }}">
+                    <span>{{ message }}</span>
+                    <button onclick="this.parentElement.remove()">&times;</button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="dashboard-content">
+                <div class="card p-4 shadow-sm bg-white rounded-3">
+                    <form method="POST" action="{% url 'dashboard_site_settings' %}">
+                        {% csrf_token %}
+
+                        <!-- BRAND & GENERAL SETTINGS -->
+                        <h3 class="border-bottom pb-2 mb-3 text-primary">📌 General Brand Settings</h3>
+                        <div class="form-grid mb-4">
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold">Site Name</label>
+                                {{ form.site_name }}
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold">Tagline</label>
+                                {{ form.tagline }}
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold">Phone Number</label>
+                                {{ form.phone }}
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold">Email Address</label>
+                                {{ form.email }}
+                            </div>
+                            <div class="form-group span-2">
+                                <label class="form-label font-weight-bold">Address</label>
+                                {{ form.address }}
+                            </div>
+                        </div>
+
+                        <!-- ABOUT PAGE SETTINGS -->
+                        <h3 class="border-bottom pb-2 mb-3 text-primary mt-4">📖 About Page Content</h3>
+                        <div class="form-grid mb-4">
+                            <div class="form-group span-2">
+                                <label class="form-label font-weight-bold">About Page Header Subtitle</label>
+                                {{ form.about_subtitle }}
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold">Story Heading</label>
+                                {{ form.about_vision_heading }}
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold">Founder Name</label>
+                                {{ form.about_founder_name }}
+                            </div>
+                            <div class="form-group span-2">
+                                <label class="form-label font-weight-bold">Main Vision & Story Text</label>
+                                {{ form.about_vision_text }}
+                            </div>
+                            <div class="form-group span-2">
+                                <label class="form-label font-weight-bold">Highlighted Tagline Quote</label>
+                                {{ form.about_quote }}
+                            </div>
+                        </div>
+
+                        <!-- CONTACT PAGE SETTINGS -->
+                        <h3 class="border-bottom pb-2 mb-3 text-primary mt-4">📞 Contact Page Content</h3>
+                        <div class="form-grid mb-4">
+                            <div class="form-group span-2">
+                                <label class="form-label font-weight-bold">Contact Page Header Subtitle</label>
+                                {{ form.contact_subtitle }}
+                            </div>
+                            <div class="form-group span-2">
+                                <label class="form-label font-weight-bold">Contact Office Address</label>
+                                {{ form.contact_address }}
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label font-weight-bold">Working Hours</label>
+                                {{ form.contact_hours }}
+                            </div>
+                            <div class="form-group span-2">
+                                <label class="form-label font-weight-bold">Google Maps Embed URL</label>
+                                {{ form.google_maps_url }}
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-top d-flex gap-3">
+                            <button type="submit" class="btn btn-primary btn-lg" style="padding: 12px 30px; font-weight: 700;">💾 Save All Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{% load static %}
+<header class="site-navbar bg-dark border-bottom border-secondary shadow-lg sticky-top py-2" id="siteNavbar">
+    <div class="container d-flex align-items-center justify-content-between">
+        <!-- LOGO BRAND -->
+        <a href="{% url 'home' %}" class="d-flex align-items-center text-decoration-none me-3" id="siteLogoBrand">
+            <div class="logo-badge-wrapper me-2 rounded-circle p-1 bg-dark border border-warning shadow-sm d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; min-width: 60px; min-height: 60px; border-radius: 50% !important; overflow: hidden !important;">
+                <img src="{% static 'images/logo/logo.png' %}?v=2" alt="{{ site_settings.site_name }} Logo" style="width: 50px; height: 50px; object-fit: contain; border-radius: 50% !important;">
+            </div>
+            <div>
+                <h4 class="fw-bold mb-0 text-white tracking-tight" style="font-family: var(--font-heading); font-size: 1.25rem;">{{ site_settings.site_name }}</h4>
+                <small class="text-warning d-block uppercase-sm fw-semibold" style="font-size: 0.65rem; letter-spacing: 0.8px;">Where Dreams Find an Address</small>
+            </div>
+        </a>
+
+        <!-- NAVIGATION MENU -->
+        <nav class="nav-menu d-none d-lg-block" id="navMenu">
+            <ul class="nav d-flex align-items-center gap-2 mb-0 list-unstyled">
+                <li class="nav-item">
+                    <a href="{% url 'home' %}" class="nav-link px-3 py-2 rounded-3 text-white fw-bold {% if request.resolver_match.url_name == 'home' %}bg-warning text-dark{% endif %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'property_list' %}" class="nav-link px-3 py-2 rounded-3 text-white fw-bold {% if request.resolver_match.url_name == 'property_list' or request.resolver_match.url_name == 'property_detail' %}bg-warning text-dark{% endif %}">Properties</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'about' %}" class="nav-link px-3 py-2 rounded-3 text-white fw-bold {% if request.resolver_match.url_name == 'about' %}bg-warning text-dark{% endif %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'contact' %}" class="nav-link px-3 py-2 rounded-3 text-white fw-bold {% if request.resolver_match.url_name == 'contact' %}bg-warning text-dark{% endif %}">Contact</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- ACTION BUTTONS -->
+        <div class="d-flex align-items-center gap-2">
+            <!-- WhatsApp Quick Chat Button -->
+            <a href="https://wa.me/917083150302?text=Hello%20Perfect%20Homes%2C%20I%20am%20interested%20in%20buying%2Frenting%20a%20property." target="_blank" rel="noopener" class="btn btn-whatsapp rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm" title="Chat on WhatsApp" style="font-size: 0.85rem;">
+                <i class="bi bi-whatsapp fs-5"></i>
+                <span class="d-none d-sm-inline">WhatsApp</span>
+            </a>
+
+            <!-- Phone Call Pill -->
+            <a href="tel:{{ site_settings.phone }}" class="btn btn-dark border border-secondary rounded-pill px-3 py-2 d-none d-md-flex align-items-center gap-2 text-start shadow-sm" style="font-size: 0.85rem;">
+                <i class="bi bi-telephone-fill text-warning fs-6"></i>
+                <div>
+                    <span class="d-block fw-bold text-white lh-1">+91 7083150302</span>
+                </div>
+            </a>
+
+            <!-- Gold Book Consultation Button -->
+            <a href="{% url 'contact' %}" class="btn text-dark fw-bold px-4 py-2 rounded-3 shadow d-flex align-items-center gap-2" style="background-color: var(--accent); border: none;">
+                <i class="bi bi-stars"></i> Book Consultation
+            </a>
+
+            {% if user.is_authenticated and user.is_staff %}
+                <a href="{% url 'dashboard' %}" class="btn btn-outline-warning btn-sm rounded-3 fw-bold" title="Admin Dashboard">
+                    ⚙️ Dashboard
+                </a>
+            {% endif %}
+
+            <button class="mobile-toggle d-lg-none btn btn-dark text-white border border-secondary ms-1" id="mobileToggle" aria-label="Toggle navigation">
+                <i class="bi bi-list fs-4 text-warning"></i>
+            </button>
+        </div>
+    </div>
+</header>

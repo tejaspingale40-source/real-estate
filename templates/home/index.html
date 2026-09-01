@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Perfect Homes | Real Estate Advisory Pune {% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<section class="hero-section position-relative overflow-hidden py-5 d-flex align-items-center" style="min-height: 85vh; background: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.65)), url('{% static 'images/banners/hero_banner.jpg' %}') center/cover no-repeat;">
+    <div class="container text-center py-5 position-relative z-2">
+        
+        <!-- MAIN HEADLINE -->
+        <h1 class="display-3 fw-bold text-white mb-5" style="font-family: var(--font-heading);">
+            Find Your Dream Property <br>
+            <span style="color: var(--accent);">in Pune</span>
+        </h1>
+        
+        <!-- SLEEK COMPACT FLOATING SEARCH BAR -->
+        <div class="card border-0 shadow-lg rounded-pill p-2 px-3 mx-auto bg-white text-start" style="max-width: 880px;">
+            <form action="{% url 'property_list' %}" method="GET" class="row g-2 align-items-center">
+                <!-- LOCATION -->
+                <div class="col-12 col-md-4">
+                    <div class="d-flex align-items-center bg-light rounded-pill px-3 py-1 border border-0">
+                        <i class="bi bi-geo-alt-fill text-warning me-2 fs-5"></i>
+                        <div class="w-100">
+                            <label class="d-block text-muted uppercase-sm font-monospace fw-bold mb-0" style="font-size: 0.65rem; letter-spacing: 0.5px;">LOCATION</label>
+                            <input type="text" name="location" list="heroLocationList" class="form-control border-0 bg-transparent p-0 fs-6 shadow-none text-dark fw-medium" placeholder="Search">
+                            <datalist id="heroLocationList">
+                                {% for loc in locations %}
+                                <option value="{{ loc }}">
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- PROPERTY TYPE -->
+                <div class="col-12 col-md-4">
+                    <div class="d-flex align-items-center bg-light rounded-pill px-3 py-1 border border-0">
+                        <i class="bi bi-building text-warning me-2 fs-5"></i>
+                        <div class="w-100">
+                            <label class="d-block text-muted uppercase-sm font-monospace fw-bold mb-0" style="font-size: 0.65rem; letter-spacing: 0.5px;">PROPERTY TYPE</label>
+                            <select name="property_type" class="form-select border-0 bg-transparent p-0 fs-6 shadow-none text-dark fw-medium">
+                                <option value="">Luxury Apartment</option>
+                                <option value="House">Independent House</option>
+                                <option value="Apartment">Apartment</option>
+                                <option value="Villa">Villa / Bungalow</option>
+                                <option value="Plot">Collector NA Plot</option>
+                                <option value="Commercial">Commercial Hub</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- BUDGET RANGE & SEARCH BUTTON -->
+                <div class="col-12 col-md-4">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center bg-light rounded-pill px-3 py-1 border border-0 flex-fill">
+                            <i class="bi bi-sliders text-warning me-2 fs-5"></i>
+                            <div class="w-100">
+                                <label class="d-block text-muted uppercase-sm font-monospace fw-bold mb-0" style="font-size: 0.65rem; letter-spacing: 0.5px;">BUDGET</label>
+                                <select name="max_price" class="form-select border-0 bg-transparent p-0 fs-6 shadow-none text-dark fw-medium">
+                                    <option value="">Any Budget</option>
+                                    <option value="3000000">Under ₹30L</option>
+                                    <option value="7000000">₹30L - ₹70L</option>
+                                    <option value="12000000">₹70L - ₹1.2 Cr</option>
+                                    <option value="25000000">Above ₹1.2 Cr</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn text-white fw-bold rounded-circle p-3 shadow-sm d-flex align-items-center justify-content-center flex-shrink-0" style="background-color: var(--accent); border: none; width: 48px; height: 48px;" title="Search Properties">
+                            <i class="bi bi-search fs-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</section>
+
+<!-- FEATURED PROPERTIES -->
+<section class="section featured-section bg-light">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-subtitle">Handpicked Collection</span>
+            <h2 class="section-title">Featured Properties</h2>
+            <p class="section-desc">Explore our top-rated residential and commercial properties available for purchase or lease.</p>
+        </div>
+
+        <div class="property-grid">
+            {% for prop in featured_properties %}
+            <div class="property-card">
+                <div class="card-media">
+                    {% if prop.cover_image %}
+                        <img src="{{ prop.cover_image.image.url }}" alt="{{ prop.title }}" loading="lazy">
+                    {% else %}
+                        <img src="{% static 'images/banners/property_placeholder.jpg' %}" alt="{{ prop.title }}" loading="lazy">
+                    {% endif %}
+                    <span class="badge badge-purpose">{{ prop.purpose }}</span>
+                    <span class="badge badge-type">{{ prop.property_type }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-price">₹{{ prop.price|floatformat:0 }}</div>
+                    <h3 class="card-title">
+                        <a href="{% url 'property_detail' slug=prop.slug %}">{{ prop.title }}</a>
+                    </h3>
+                    <p class="card-location">📍 {{ prop.location }}</p>
+                    
+                    <div class="card-features">
+                        <span>🛏️ {{ prop.bedrooms }} Bed</span>
+                        <span>🚿 {{ prop.bathrooms }} Bath</span>
+                        <span>📐 {{ prop.area|floatformat:0 }} sq.ft</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'property_detail' slug=prop.slug %}" class="btn btn-outline btn-full">View Details</a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="no-properties-box">
+                <p>No featured properties currently listed. Please check out our complete <a href="{% url 'property_list' %}">Property Catalog</a>.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center margin-top-lg">
+            <a href="{% url 'property_list' %}" class="btn btn-primary btn-lg">Explore All Properties &rarr;</a>
+        </div>
+    </div>
+</section>
+
+
+<!-- WHY CHOOSE US -->
+<section class="section why-choose-section bg-light py-5">
+    <div class="container py-4">
+        <div class="section-header text-center mb-5">
+            <span class="section-subtitle gold-text text-uppercase fw-bold">Our Value Proposition</span>
+            <h2 class="section-title display-6 fw-bold mt-2">Why Choose {{ site_settings.site_name }}</h2>
+            <p class="section-desc text-muted">Experience unmatched expertise, ethics, and innovation in every transaction.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center rounded-4 hover-top transition-all bg-white">
+                    <div class="display-4 mb-3 text-primary">🛡️</div>
+                    <h3 class="h5 fw-bold text-dark mb-2">Trusted Properties</h3>
+                    <p class="text-muted small mb-0">100% verified property listings with complete clear title guarantee and legal peace of mind.</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center rounded-4 hover-top transition-all bg-white">
+                    <div class="display-4 mb-3 text-primary">👔</div>
+                    <h3 class="h5 fw-bold text-dark mb-2">Professional Service</h3>
+                    <p class="text-muted small mb-0">Dedicated personal advisors to manage site visits, negotiations, and closing paperwork efficiently.</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center rounded-4 hover-top transition-all bg-white">
+                    <div class="display-4 mb-3 text-primary">🗺️</div>
+                    <h3 class="h5 fw-bold text-dark mb-2">Local Knowledge</h3>
+                    <p class="text-muted small mb-0">Deep expertise in prime localities Pune and surrounding high-growth regions.</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm p-4 text-center rounded-4 hover-top transition-all bg-white">
+                    <div class="display-4 mb-3 text-primary">🎧</div>
+                    <h3 class="h5 fw-bold text-dark mb-2">Customer Support</h3>
+                    <p class="text-muted small mb-0">24/7 dedicated client assistance to answer queries and guide your investments step by step.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- HOME LOAN EMI CALCULATOR -->
+<section class="section emi-calculator-section bg-light" id="emi-calculator">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-subtitle">Financial Planning</span>
+            <h2 class="section-title">Home Loan EMI Calculator</h2>
+            <p class="section-desc">Estimate your monthly installments (EMI), total interest payable, and plan your property purchase with confidence.</p>
+        </div>
+
+        <div class="emi-calculator-card grid-2-col shadow-lg">
+            <!-- CALCULATOR SLIDERS -->
+            <div class="calculator-inputs">
+                <div class="calc-group">
+                    <div class="calc-label-row">
+                        <label for="loanAmountRange">Loan Amount</label>
+                        <span class="calc-val-display" id="loanAmountText">₹ 50,00,000</span>
+                    </div>
+                    <input type="range" id="loanAmountRange" min="500000" max="50000000" step="100000" value="5000000" class="calc-range-slider">
+                    <div class="range-limits">
+                        <span>₹5 Lakhs</span>
+                        <span>₹5 Crores</span>
+                    </div>
+                </div>
+
+                <div class="calc-group">
+                    <div class="calc-label-row">
+                        <label for="interestRateRange">Interest Rate (% p.a.)</label>
+                        <span class="calc-val-display" id="interestRateText">8.5%</span>
+                    </div>
+                    <input type="range" id="interestRateRange" min="5" max="15" step="0.1" value="8.5" class="calc-range-slider">
+                    <div class="range-limits">
+                        <span>5%</span>
+                        <span>15%</span>
+                    </div>
+                </div>
+
+                <div class="calc-group">
+                    <div class="calc-label-row">
+                        <label for="loanTenureRange">Loan Tenure (Years)</label>
+                        <span class="calc-val-display" id="loanTenureText">20 Years</span>
+                    </div>
+                    <input type="range" id="loanTenureRange" min="1" max="30" step="1" value="20" class="calc-range-slider">
+                    <div class="range-limits">
+                        <span>1 Year</span>
+                        <span>30 Years</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CALCULATOR RESULTS -->
+            <div class="calculator-results">
+                <div class="emi-result-box">
+                    <span class="emi-result-label">Monthly EMI</span>
+                    <h3 class="emi-result-value" id="monthlyEmiVal">₹ 43,391</h3>
+                </div>
+
+                <div class="results-breakdown-list">
+                    <div class="breakdown-item">
+                        <span><span class="dot dot-principal"></span> Principal Amount</span>
+                        <strong class="item-value" id="principalVal">₹ 50,00,000</strong>
+                    </div>
+                    <div class="breakdown-item">
+                        <span><span class="dot dot-interest"></span> Total Interest Payable</span>
+                        <strong class="item-value" id="totalInterestVal">₹ 54,13,879</strong>
+                    </div>
+                    <div class="breakdown-item total-row">
+                        <span>Total Amount Payable</span>
+                        <strong class="item-value" id="totalAmountVal">₹ 1,04,13,879</strong>
+                    </div>
+                </div>
+
+                <div class="emi-progress-wrapper">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill principal-fill" id="principalBar" style="width: 48%;"></div>
+                        <div class="progress-bar-fill interest-fill" id="interestBar" style="width: 52%;"></div>
+                    </div>
+                </div>
+
+                <div class="calculator-actions text-center margin-top-md">
+                    <a href="{% url 'contact' %}" class="btn btn-gold btn-full">Get Home Loan Consultation</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CALL TO ACTION -->
+<section class="cta-section">
+    <div class="container text-center">
+        <h2 class="cta-title">Looking for your dream property?</h2>
+        <p class="cta-desc">Reach out to our expert property advisors today for personalized property recommendations.</p>
+        <a href="{% url 'contact' %}" class="btn btn-gold btn-lg">Contact Us Today</a>
+    </div>
+</section>
+{% endblock %}

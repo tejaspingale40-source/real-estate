@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container text-center">
+        <h1 class="page-title">Contact Our Team</h1>
+        <p class="page-subtitle">{{ site_settings.contact_subtitle }}</p>
+    </div>
+</div>
+
+<div class="container section">
+    <div class="grid-2-col">
+        <!-- CONTACT INFO -->
+        <div class="contact-info-card card shadow-sm">
+            <h2 class="card-title">Get In Touch</h2>
+            <p class="margin-bottom-md">Our real estate advisors are available 6 days a week to assist with buying, selling, or leasing properties.</p>
+
+            <div class="info-list">
+                <div class="info-item">
+                    <span class="info-icon">📍</span>
+                    <div>
+                        <h4>Headquarters</h4>
+                        <p>{{ site_settings.contact_address }}</p>
+                    </div>
+                </div>
+
+                <!-- GOOGLE MAPS LOCATION EMBED -->
+                <div class="google-map-container border rounded-4 overflow-hidden shadow-sm bg-white p-2 mt-3 mb-4">
+                    <div class="ratio ratio-16x9 rounded-3 overflow-hidden border">
+                        <iframe 
+                            src="{{ site_settings.google_maps_url }}" 
+                            width="100%" 
+                            height="300" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">📞</span>
+                    <div>
+                        <h4>Phone Numbers</h4>
+                        <p>{{ site_settings.phone }}</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">💬</span>
+                    <div>
+                        <h4>WhatsApp Instant Chat</h4>
+                        <p><a href="https://wa.me/{{ site_settings.phone|cut:' ' |cut:'+' }}?text=Hello%20Perfect%20Homes%2C%20I%20am%20contacting%20you%20from%20your%20website." target="_blank" rel="noopener" class="text-success fw-bold">Click here to chat: {{ site_settings.phone }}</a></p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">✉️</span>
+                    <div>
+                        <h4>Email</h4>
+                        <p>{{ site_settings.email }}</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">⏰</span>
+                    <div>
+                        <h4>Working Hours</h4>
+                        <p>{{ site_settings.contact_hours }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTACT FORM -->
+        <div class="contact-form-card card shadow-sm">
+            <h2 class="card-title">Send Us A Message</h2>
+            <form method="POST" action="{% url 'contact' %}">
+                {% csrf_token %}
+                <div class="form-group margin-bottom-sm">
+                    <label>Full Name *</label>
+                    {{ enquiry_form.name }}
+                </div>
+                <div class="form-group margin-bottom-sm">
+                    <label>Phone Number *</label>
+                    {{ enquiry_form.phone }}
+                </div>
+                <div class="form-group margin-bottom-sm">
+                    <label>Email Address *</label>
+                    {{ enquiry_form.email }}
+                </div>
+                <div class="form-group margin-bottom-md">
+                    <label>Your Message / Requirements *</label>
+                    {{ enquiry_form.message }}
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">📩 Submit Message</button>
+                <a href="https://wa.me/917083150302?text=Hello%20Perfect%20Homes%2C%20I%20would%20like%20to%20inquire%20about%20your%20services." target="_blank" rel="noopener" class="btn btn-whatsapp btn-block margin-top-sm">
+                    <i class="bi bi-whatsapp"></i> Chat directly on WhatsApp
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

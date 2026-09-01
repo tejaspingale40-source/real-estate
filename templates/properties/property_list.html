@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Property Catalog | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container text-center">
+        <h1 class="page-title">Explore Properties</h1>
+        <p class="page-subtitle">Search and filter through our verified inventory of luxury homes, plots, and commercial spaces.</p>
+    </div>
+</div>
+
+<div class="container section">
+    <!-- ENHANCED COMPACT FILTER BAR -->
+    <div class="filter-wrapper card shadow-sm border-0 rounded-4 p-3 mb-4 bg-white">
+        <form method="GET" action="{% url 'property_list' %}" class="filter-form" id="filterForm">
+            <div class="row g-2 align-items-center">
+                <!-- Search phrase -->
+                <div class="col-12 col-md-3">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                        <input type="text" name="q" value="{{ query }}" class="form-control form-control-sm border-start-0 py-2" placeholder="Title, location, keyword...">
+                    </div>
+                </div>
+
+                <!-- Location -->
+                <div class="col-6 col-md-2">
+                    <input type="text" name="location" value="{{ selected_location }}" list="catalogLocationOptions" class="form-control form-control-sm py-2" placeholder="Search location...">
+                    <datalist id="catalogLocationOptions">
+                        {% for loc in locations %}
+                        <option value="{{ loc }}">
+                        {% endfor %}
+                    </datalist>
+                </div>
+
+                <!-- Property Type -->
+                <div class="col-6 col-md-2">
+                    <select name="property_type" class="form-select form-select-sm py-2">
+                        <option value="">All Types</option>
+                        <option value="House" {% if selected_type == 'House' %}selected{% endif %}>House</option>
+                        <option value="Apartment" {% if selected_type == 'Apartment' %}selected{% endif %}>Apartment</option>
+                        <option value="Villa" {% if selected_type == 'Villa' %}selected{% endif %}>Villa</option>
+                        <option value="Plot" {% if selected_type == 'Plot' %}selected{% endif %}>Plot</option>
+                        <option value="Commercial" {% if selected_type == 'Commercial' %}selected{% endif %}>Commercial</option>
+                    </select>
+                </div>
+
+                <!-- Purpose -->
+                <div class="col-6 col-md-2">
+                    <select name="purpose" class="form-select form-select-sm py-2">
+                        <option value="">Sale & Rent</option>
+                        <option value="Sale" {% if selected_purpose == 'Sale' %}selected{% endif %}>For Sale</option>
+                        <option value="Rent" {% if selected_purpose == 'Rent' %}selected{% endif %}>For Rent</option>
+                    </select>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="col-6 col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm flex-fill py-2 fw-bold rounded-3">
+                        <i class="bi bi-funnel-fill me-1"></i> Filter
+                    </button>
+                    <a href="{% url 'property_list' %}" class="btn btn-outline-secondary btn-sm py-2 px-3 rounded-3" title="Reset Filters">
+                        <i class="bi bi-arrow-counterclockwise"></i> Reset
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="catalog-results-meta">
+        <h3>Found <span>{{ total_count }}</span> Properties</h3>
+    </div>
+
+    <!-- PROPERTY GRID -->
+    <div class="property-grid margin-top-md">
+        {% for prop in properties %}
+        <div class="property-card">
+            <div class="card-media">
+                {% if prop.cover_image %}
+                    <img src="{{ prop.cover_image.image.url }}" alt="{{ prop.title }}" loading="lazy">
+                {% else %}
+                    <img src="{% static 'images/banners/property_placeholder.jpg' %}" alt="{{ prop.title }}" loading="lazy">
+                {% endif %}
+                <span class="badge badge-purpose">{{ prop.purpose }}</span>
+                <span class="badge badge-type">{{ prop.property_type }}</span>
+            </div>
+            <div class="card-body">
+                <div class="card-price">₹{{ prop.price|floatformat:0 }}</div>
+                <h3 class="card-title">
+                    <a href="{% url 'property_detail' slug=prop.slug %}">{{ prop.title }}</a>
+                </h3>
+                <p class="card-location">📍 {{ prop.location }}</p>
+                
+                <div class="card-features">
+                    <span>🛏️ {{ prop.bedrooms }} Bed</span>
+                    <span>🚿 {{ prop.bathrooms }} Bath</span>
+                    <span>📐 {{ prop.area|floatformat:0 }} sq.ft</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'property_detail' slug=prop.slug %}" class="btn btn-outline btn-full">View Details</a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="no-properties-box full-width text-center">
+            <h3>No Properties Match Your Search Criteria</h3>
+            <p>Try clearing your filters or searching for another location.</p>
+            <a href="{% url 'property_list' %}" class="btn btn-primary margin-top-sm">View All Properties</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

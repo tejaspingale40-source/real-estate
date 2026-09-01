@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Enquiries | LuxeHaven Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body class="dashboard-body">
+
+    <div class="dashboard-wrapper">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <a href="{% url 'home' %}" class="sidebar-logo text-decoration-none d-flex align-items-center gap-2">
+                    <img src="{% static 'images/logo/logo.png' %}" alt="{{ site_settings.site_name }} Logo" style="width: 38px; height: 38px; object-fit: contain; background: #0f172a; border-radius: 8px; border: 1px solid #d99b26; padding: 2px;">
+                    <span class="logo-text fw-bold text-warning" style="font-family: var(--font-heading);">{{ site_settings.site_name }}</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="sidebar-menu">
+                    <li class="menu-item"><a href="{% url 'dashboard' %}"><span class="icon">📊</span> Dashboard</a></li>
+                    <li class="menu-item"><a href="{% url 'dashboard_properties' %}"><span class="icon">🏢</span> Properties</a></li>
+                    <li class="menu-item"><a href="{% url 'dashboard_property_add' %}"><span class="icon">➕</span> Add Property</a></li>
+                    <li class="menu-item active"><a href="{% url 'dashboard_enquiries' %}"><span class="icon">📩</span> Enquiries</a></li>
+                    <li class="menu-item"><a href="{% url 'dashboard_site_settings' %}"><span class="icon">⚙️</span> Site & Page Settings</a></li>
+                    <li class="menu-item"><a href="{% url 'admin:index' %}"><span class="icon">🛠️</span> Django Admin</a></li>
+                    <li class="menu-item"><a href="{% url 'home' %}"><span class="icon">🌐</span> Public Site</a></li>
+                    <li class="menu-item"><a href="{% url 'dashboard_logout' %}"><span class="icon">🚪</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <header class="dashboard-topbar">
+                <h2 class="topbar-title">Customer Enquiries Management</h2>
+            </header>
+
+            {% if messages %}
+            <div class="toast-container">
+                {% for message in messages %}
+                <div class="toast toast-{{ message.tags }}">
+                    <span>{{ message }}</span>
+                    <button onclick="this.parentElement.remove()">&times;</button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="dashboard-content">
+                <div class="dash-card">
+                    <div class="dash-card-header flex-between">
+                        <h3>All Enquiries ({{ enquiries.count }})</h3>
+                        
+                        <form method="GET" class="inline-filter-form">
+                            <select name="status" class="form-select-sm" onchange="this.form.submit()">
+                                <option value="">Filter by Status (All)</option>
+                                {% for val, label in status_choices %}
+                                <option value="{{ val }}" {% if selected_status == val %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>Client Name</th>
+                                    <th>Contact Info</th>
+                                    <th>Property Interested</th>
+                                    <th>Message Snippet</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Update Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for enq in enquiries %}
+                                <tr>
+                                    <td><strong>{{ enq.name }}</strong></td>
+                                    <td>
+                                        📞 {{ enq.phone }}<br>
+                                        ✉️ {{ enq.email }}
+                                    </td>
+                                    <td>
+                                        {% if enq.property %}
+                                        <a href="{% url 'property_detail' slug=enq.property.slug %}" target="_blank"><strong>{{ enq.property.title }}</strong></a>
+                                        {% else %}
+                                        <span class="text-muted">General Contact Form</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="message-cell">{{ enq.message|truncatewords:15 }}</td>
+                                    <td><span class="badge-status status-{{ enq.status|slugify }}">{{ enq.status }}</span></td>
+                                    <td>{{ enq.created_at|date:"M d, Y H:i" }}</td>
+                                    <td>
+                                        <form method="POST" action="{% url 'dashboard_enquiry_update_status' pk=enq.id %}" class="inline-status-form">
+                                            {% csrf_token %}
+                                            <select name="status" onchange="this.form.submit()" class="form-select-sm">
+                                                {% for val, label in status_choices %}
+                                                <option value="{{ val }}" {% if enq.status == val %}selected{% endif %}>{{ label }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">No customer enquiries recorded yet.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

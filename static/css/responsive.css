@@ -1,0 +1,84 @@
+/* RESPONSIVE CSS MEDIA QUERIES */
+
+@media (max-width: 1024px) {
+    .hero-title { font-size: 3rem; }
+    .search-form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .detail-layout-grid {
+        grid-template-columns: 1fr;
+    }
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .specs-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        position: fixed;
+        top: 80px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 80px);
+        background-color: var(--primary);
+        flex-direction: column;
+        justify-content: center;
+        transition: var(--transition);
+        z-index: 999;
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .nav-list {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .mobile-toggle {
+        display: flex;
+    }
+
+    .hero-title { font-size: 2.3rem; }
+    .hero-subtitle { font-size: 1rem; }
+
+    .search-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-2-col {
+        grid-template-columns: 1fr;
+    }
+
+    .experience-badge {
+        position: static;
+        margin-top: 20px;
+    }
+
+    .property-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-bottom-content {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .detail-title-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .price-tag {
+        text-align: left;
+    }
+}
