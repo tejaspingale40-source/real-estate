@@ -1,7 +1,10 @@
 /* RESPONSIVE CSS MEDIA QUERIES */
 
+/* Large Tablets & Small Laptops (max-width: 1024px) */
 @media (max-width: 1024px) {
-    .hero-title { font-size: 3rem; }
+    .hero-title { 
+        font-size: 2.8rem; 
+    }
     .search-form-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -10,47 +13,97 @@
     }
     .footer-grid {
         grid-template-columns: 1fr 1fr;
+        gap: 30px;
     }
     .specs-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 768px) {
+/* Tablets & Mobile Devices (max-width: 991px) */
+@media (max-width: 991px) {
+    .site-navbar {
+        padding: 8px 0;
+    }
+    
+    .navbar-container {
+        height: auto;
+        padding: 4px 0;
+    }
+
     .nav-menu {
         position: fixed;
-        top: 80px;
+        top: 70px;
         left: -100%;
         width: 100%;
-        height: calc(100vh - 80px);
+        height: calc(100vh - 70px);
         background-color: var(--primary);
         flex-direction: column;
-        justify-content: center;
-        transition: var(--transition);
+        justify-content: flex-start;
+        padding: 40px 24px;
+        transition: left 0.3s ease-in-out;
         z-index: 999;
+        overflow-y: auto;
     }
 
     .nav-menu.active {
         left: 0;
     }
 
-    .nav-list {
-        flex-direction: column;
-        gap: 24px;
+    .nav-menu .nav {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        width: 100%;
+        gap: 12px !important;
+    }
+
+    .nav-menu .nav-link {
+        font-size: 1.1rem;
+        padding: 12px 20px !important;
+        text-align: center;
     }
 
     .mobile-toggle {
-        display: flex;
+        display: flex !important;
     }
 
-    .hero-title { font-size: 2.3rem; }
-    .hero-subtitle { font-size: 1rem; }
+    .grid-2-col, .emi-calculator-card {
+        grid-template-columns: 1fr !important;
+        gap: 30px !important;
+    }
+}
+
+/* Small Tablets & Mobile Phones (max-width: 768px) */
+@media (max-width: 768px) {
+    .container, .custom-container {
+        width: 95%;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .section {
+        padding: 50px 0;
+    }
+
+    .hero-section {
+        min-height: auto !important;
+        padding: 40px 0 !important;
+    }
+
+    .hero-title { 
+        font-size: 2.1rem !important; 
+        line-height: 1.25;
+    }
+    
+    .hero-subtitle { 
+        font-size: 0.95rem; 
+    }
+
+    .section-title {
+        font-size: 1.9rem;
+    }
 
     .search-form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .grid-2-col {
         grid-template-columns: 1fr;
     }
 
@@ -61,10 +114,12 @@
 
     .property-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
 
     .footer-grid {
         grid-template-columns: 1fr;
+        gap: 25px;
     }
 
     .footer-bottom-content {
@@ -81,4 +136,57 @@
     .price-tag {
         text-align: left;
     }
+
+    .main-image-container {
+        height: 280px;
+    }
+
+    .specs-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .amenities-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+
+    /* Modal adjustments */
+    .modal-dialog {
+        margin: 0.5rem;
+    }
 }
+
+/* Small Phones (max-width: 576px) */
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 1.75rem !important;
+    }
+
+    .site-logo-brand img {
+        width: 42px !important;
+        height: 42px !important;
+    }
+
+    .btn {
+        padding: 10px 18px;
+        font-size: 0.88rem;
+    }
+
+    .btn-lg {
+        padding: 12px 24px;
+        font-size: 0.98rem;
+    }
+
+    .card-price {
+        font-size: 1.35rem;
+    }
+
+    .card-title {
+        font-size: 1.1rem;
+    }
+
+    .toast {
+        min-width: calc(100vw - 40px);
+    }
+}
+

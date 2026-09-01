@@ -47,8 +47,8 @@
             </a>
 
             <!-- Gold Book Consultation Button -->
-            <a href="{% url 'contact' %}" class="btn text-dark fw-bold px-4 py-2 rounded-3 shadow d-flex align-items-center gap-2" style="background-color: var(--accent); border: none;">
-                <i class="bi bi-stars"></i> Book Consultation
+            <a href="{% url 'contact' %}" class="btn text-dark fw-bold px-3 px-sm-4 py-2 rounded-3 shadow d-flex align-items-center gap-1 gap-sm-2" style="background-color: var(--accent); border: none; font-size: 0.85rem;">
+                <i class="bi bi-stars"></i> <span class="d-none d-xs-inline">Consultation</span><span class="d-inline d-xs-none">Book</span>
             </a>
 
             {% if user.is_authenticated and user.is_staff %}
