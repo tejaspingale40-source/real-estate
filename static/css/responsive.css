@@ -252,4 +252,35 @@
     }
 }
 
+/* Mobile EMI Calculator Optimization */
+@media (max-width: 768px) {
+    .emi-calculator-card {
+        padding: 20px 16px !important;
+        border-radius: 16px !important;
+    }
+    .calculator-results {
+        padding: 20px 16px !important;
+        border-radius: 14px !important;
+    }
+    .emi-result-box {
+        padding: 16px 12px !important;
+        margin-bottom: 18px !important;
+    }
+    .emi-result-value {
+        font-size: 1.85rem !important;
+        word-break: break-word;
+    }
+    .calc-val-display {
+        font-size: 0.9rem !important;
+        padding: 3px 10px !important;
+    }
+    .breakdown-item {
+        font-size: 0.88rem !important;
+    }
+    .calc-label-row label {
+        font-size: 0.88rem !important;
+    }
+}
+
+
 
