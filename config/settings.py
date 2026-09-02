@@ -184,7 +184,7 @@ if CLOUDINARY_URL:
             'cloudinary_storage',
             'cloudinary',
         ])
-        DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudErrorStorage'
+        DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
     except ImportError:
         pass
 
