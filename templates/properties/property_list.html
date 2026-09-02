@@ -78,9 +78,9 @@
         <div class="property-card">
             <div class="card-media">
                 {% if prop.cover_image %}
-                    <img src="{{ prop.cover_image.image.url }}" alt="{{ prop.title }}" loading="lazy">
+                    <img src="{{ prop.cover_image.image.url }}" alt="{{ prop.title }}" loading="lazy" onerror="this.onerror=null;this.src='{% static 'images/placeholder-property.jpg' %}';">
                 {% else %}
-                    <img src="{% static 'images/banners/property_placeholder.jpg' %}" alt="{{ prop.title }}" loading="lazy">
+                    <img src="{% static 'images/placeholder-property.jpg' %}" alt="{{ prop.title }}" loading="lazy">
                 {% endif %}
                 <span class="badge badge-purpose">{{ prop.purpose }}</span>
                 <span class="badge badge-type">{{ prop.property_type }}</span>

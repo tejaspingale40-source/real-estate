@@ -1,16 +1,58 @@
 // MAIN JAVASCRIPT FILE
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Mobile Menu Drawer Toggle
+    // 1. Mobile Menu Drawer Toggle & Auto-Close
     const mobileToggle = document.getElementById('mobileToggle');
     const navMenu = document.getElementById('navMenu');
 
     if (mobileToggle && navMenu) {
-        mobileToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            mobileToggle.classList.toggle('active');
+        function toggleMobileMenu(show) {
+            const isExpanded = show !== undefined ? show : !navMenu.classList.contains('active');
+            navMenu.classList.toggle('active', isExpanded);
+            mobileToggle.classList.toggle('active', isExpanded);
+            mobileToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+            
+            const icon = mobileToggle.querySelector('i');
+            if (icon) {
+                if (isExpanded) {
+                    icon.classList.remove('bi-list');
+                    icon.classList.add('bi-x-lg');
+                } else {
+                    icon.classList.remove('bi-x-lg');
+                    icon.classList.add('bi-list');
+                }
+            }
+        }
+
+        mobileToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMobileMenu();
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !mobileToggle.contains(e.target)) {
+                toggleMobileMenu(false);
+            }
+        });
+
+        // Close mobile menu when clicking any navigation link
+        const navLinks = navMenu.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => toggleMobileMenu(false));
         });
     }
+
+    // 2. Global Image Error Fallback Handler (handles missing/broken uploaded property images)
+    document.addEventListener('error', (e) => {
+        if (e.target.tagName && e.target.tagName.toLowerCase() === 'img') {
+            const img = e.target;
+            if (!img.dataset.fallbackTried) {
+                img.dataset.fallbackTried = 'true';
+                img.src = '/static/images/placeholder-property.jpg';
+            }
+        }
+    }, true);
 
 
 

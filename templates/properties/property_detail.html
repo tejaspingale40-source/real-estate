@@ -31,9 +31,9 @@
             <div class="gallery-wrapper card shadow-sm">
                 <div class="main-image-container">
                     {% if images %}
-                        <img id="mainGalleryImage" src="{{ images.0.image.url }}" alt="{{ property.title }}" class="main-gallery-img">
+                        <img id="mainGalleryImage" src="{{ images.0.image.url }}" alt="{{ property.title }}" class="main-gallery-img" onerror="this.onerror=null;this.src='{% static 'images/placeholder-property.jpg' %}';">
                     {% else %}
-                        <img src="{% static 'images/banners/property_placeholder.jpg' %}" alt="{{ property.title }}" class="main-gallery-img">
+                        <img src="{% static 'images/placeholder-property.jpg' %}" alt="{{ property.title }}" class="main-gallery-img">
                     {% endif %}
                 </div>
                 
@@ -41,7 +41,7 @@
                 <div class="gallery-thumbnails" id="galleryThumbnails">
                     {% for img in images %}
                     <div class="thumbnail-item {% if forloop.first %}active{% endif %}" onclick="switchMainImage('{{ img.image.url }}', this)">
-                        <img src="{{ img.image.url }}" alt="Thumbnail {{ forloop.counter }}">
+                        <img src="{{ img.image.url }}" alt="Thumbnail {{ forloop.counter }}" onerror="this.onerror=null;this.src='{% static 'images/placeholder-property.jpg' %}';">
                     </div>
                     {% endfor %}
                 </div>

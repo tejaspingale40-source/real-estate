@@ -1,5 +1,30 @@
 /* RESPONSIVE CSS MEDIA QUERIES */
 
+/* Base Brand & Logo styling across screens */
+.logo-badge-wrapper {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    min-height: 52px;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+}
+.brand-logo-img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    border-radius: 50% !important;
+}
+.brand-title {
+    font-size: 1.25rem;
+}
+.brand-tagline {
+    font-size: 0.65rem;
+}
+.navbar-btn-wa, .navbar-btn-consult {
+    font-size: 0.85rem;
+}
+
 /* Large Tablets & Small Laptops (max-width: 1024px) */
 @media (max-width: 1024px) {
     .hero-title { 
@@ -18,36 +43,31 @@
     .specs-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    .nav-menu {
-        display: block;
-    }
 }
 
 /* Tablets & Mobile Devices (max-width: 991px) */
 @media (max-width: 991px) {
     .site-navbar {
-        padding: 8px 0;
-    }
-    
-    .navbar-container {
-        height: auto;
-        padding: 4px 0;
+        padding: 6px 0;
     }
 
     .nav-menu {
         display: none;
         position: fixed;
-        top: 70px;
+        top: 64px;
         left: -100%;
         width: 100%;
-        height: calc(100vh - 70px);
-        background-color: var(--primary);
+        height: calc(100vh - 64px);
+        background: rgba(15, 23, 42, 0.98);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         flex-direction: column;
         justify-content: flex-start;
-        padding: 40px 24px;
-        transition: left 0.3s ease-in-out;
-        z-index: 999;
+        padding: 30px 20px;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1040;
         overflow-y: auto;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .nav-menu.active {
@@ -66,10 +86,13 @@
         font-size: 1.1rem;
         padding: 12px 20px !important;
         text-align: center;
+        border-radius: 8px;
     }
 
     .mobile-toggle {
         display: flex !important;
+        align-items: center;
+        justify-content: center;
     }
 
     .grid-2-col, .emi-calculator-card {
@@ -81,18 +104,18 @@
 /* Small Tablets & Mobile Phones (max-width: 768px) */
 @media (max-width: 768px) {
     .container, .custom-container {
-        width: 95%;
-        padding-left: 10px;
-        padding-right: 10px;
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
     .section {
-        padding: 50px 0;
+        padding: 40px 0;
     }
 
     .hero-section {
         min-height: auto !important;
-        padding: 40px 0 !important;
+        padding: 35px 0 !important;
     }
 
     .hero-title { 
@@ -105,7 +128,7 @@
     }
 
     .section-title {
-        font-size: 1.9rem;
+        font-size: 1.75rem;
     }
 
     .search-form-grid {
@@ -143,16 +166,16 @@
     }
 
     .main-image-container {
-        height: 280px;
+        height: 250px;
     }
 
     .specs-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     .amenities-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     }
 
     /* Modal adjustments */
@@ -161,37 +184,72 @@
     }
 }
 
-/* Small Phones (max-width: 576px) */
+/* Small Mobile Devices & Phones (max-width: 576px) */
 @media (max-width: 576px) {
-    .hero-title {
-        font-size: 1.75rem !important;
+    .logo-badge-wrapper {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        min-height: 42px;
     }
 
-    .site-logo-brand img {
-        width: 42px !important;
-        height: 42px !important;
+    .brand-logo-img {
+        width: 34px;
+        height: 34px;
+    }
+
+    .brand-title {
+        font-size: 1.05rem;
+    }
+
+    .brand-tagline {
+        font-size: 0.58rem;
+        letter-spacing: 0.4px;
+    }
+
+    .navbar-btn-wa, .navbar-btn-consult {
+        font-size: 0.78rem;
+        padding: 4px 10px !important;
+    }
+
+    .hero-title {
+        font-size: 1.65rem !important;
     }
 
     .btn {
-        padding: 10px 18px;
-        font-size: 0.88rem;
+        padding: 8px 14px;
+        font-size: 0.85rem;
     }
 
     .btn-lg {
-        padding: 12px 24px;
-        font-size: 0.98rem;
+        padding: 10px 18px;
+        font-size: 0.92rem;
     }
 
     .card-price {
-        font-size: 1.35rem;
+        font-size: 1.25rem;
     }
 
     .card-title {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
     }
 
     .toast {
-        min-width: calc(100vw - 40px);
+        min-width: calc(100vw - 30px);
     }
 }
+
+/* Ultra Small Phones (max-width: 380px) */
+@media (max-width: 380px) {
+    .brand-tagline {
+        display: none !important;
+    }
+    .brand-title {
+        font-size: 0.95rem;
+    }
+    .specs-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 

@@ -176,6 +176,18 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files (Uploaded images & videos)
+CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
+if CLOUDINARY_URL:
+    try:
+        import cloudinary_storage
+        INSTALLED_APPS.extend([
+            'cloudinary_storage',
+            'cloudinary',
+        ])
+        DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudErrorStorage'
+    except ImportError:
+        pass
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
