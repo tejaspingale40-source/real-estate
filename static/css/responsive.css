@@ -252,7 +252,7 @@
     }
 }
 
-/* Mobile EMI Calculator Optimization */
+/* Mobile EMI Calculator & Property Cards Optimization */
 @media (max-width: 768px) {
     .emi-calculator-card {
         padding: 20px 16px !important;
@@ -280,7 +280,34 @@
     .calc-label-row label {
         font-size: 0.88rem !important;
     }
+
+    /* Property Cards Mobile Polish */
+    .property-grid {
+        grid-template-columns: 1fr !important;
+        gap: 18px !important;
+    }
+    .property-card {
+        border-radius: 16px !important;
+    }
+    .card-media {
+        height: 210px !important;
+    }
+    .card-body {
+        padding: 16px !important;
+    }
+    .card-footer {
+        padding: 0 16px 16px !important;
+    }
+    .card-features {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        font-size: 0.82rem !important;
+    }
+    .card-price {
+        font-size: 1.45rem !important;
+    }
 }
+
 
 
 
