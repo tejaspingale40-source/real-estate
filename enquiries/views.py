@@ -35,6 +35,17 @@ def dashboard_enquiry_update_status(request, pk):
     return redirect('dashboard_enquiries')
 
 
+@staff_member_required(login_url='dashboard_login')
+def dashboard_enquiry_delete(request, pk):
+    enquiry = get_object_or_404(Enquiry, pk=pk)
+    if request.method == 'POST':
+        enquiry_id = enquiry.id
+        client_name = enquiry.name
+        enquiry.delete()
+        messages.success(request, f"Enquiry #{enquiry_id} from '{client_name}' has been deleted successfully.")
+    return redirect('dashboard_enquiries')
+
+
 from urllib.parse import quote
 
 def quick_enquiry_submit(request):

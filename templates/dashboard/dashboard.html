@@ -129,6 +129,7 @@
                                         <th>Property</th>
                                         <th>Status</th>
                                         <th>Date</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -139,9 +140,15 @@
                                         <td>{{ enq.property.title|default:"General Inquiry" }}</td>
                                         <td><span class="badge-status status-{{ enq.status|slugify }}">{{ enq.status }}</span></td>
                                         <td>{{ enq.created_at|date:"M d, Y" }}</td>
+                                        <td>
+                                            <form method="POST" action="{% url 'dashboard_enquiry_delete' pk=enq.id %}" onsubmit="return confirm('Are you sure you want to delete this enquiry from {{ enq.name }}?');" style="display: inline;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn-action delete" title="Delete Enquiry" style="border: none; background: transparent; cursor: pointer; font-size: 1.1rem;">🗑️</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                     {% empty %}
-                                    <tr><td colspan="5" class="text-muted text-center">No enquiries received yet.</td></tr>
+                                    <tr><td colspan="6" class="text-muted text-center">No enquiries received yet.</td></tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
