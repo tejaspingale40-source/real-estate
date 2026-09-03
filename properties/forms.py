@@ -5,9 +5,21 @@ from .models import Property, PropertyImage, PropertyVideo, Amenity
 class PropertyForm(forms.ModelForm):
     amenities = forms.ModelMultipleChoiceField(
         queryset=Amenity.objects.all(),
-        widget=forms.CheckboxSelectMultiple(attrs={'class': 'amenity-checkbox'}),
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'amenity-checkbox-input'}),
         required=False
     )
+    custom_amenities = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Add new custom amenities (e.g. Solar Panels, CCTV, EV Charger - separate with commas)'
+        }),
+        help_text="Separate multiple new amenities with commas"
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['amenities'].queryset = Amenity.objects.all()
 
     class Meta:
         model = Property
@@ -48,9 +60,10 @@ class PropertyImageForm(forms.ModelForm):
 class PropertyVideoForm(forms.ModelForm):
     class Meta:
         model = PropertyVideo
-        fields = ['video', 'title']
+        fields = ['video', 'video_url', 'title']
         widgets = {
             'video': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'video_url': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'e.g. https://res.cloudinary.com/... or https://youtube.com/...'}),
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Video Title (Optional)'}),
         }
 

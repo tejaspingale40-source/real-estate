@@ -251,6 +251,44 @@ body.dashboard-body {
     background: #f8fafc;
     padding: 16px;
     border-radius: 8px;
+    border: 1px solid var(--dash-border);
+}
+
+.amenities-checkbox-grid ul,
+.amenities-checkbox-grid div#id_amenities {
+    display: contents;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.amenities-checkbox-grid li,
+.amenities-checkbox-grid label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--dash-text);
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.amenities-checkbox-grid label:hover {
+    border-color: var(--dash-accent);
+    background-color: #f0f7ff;
+}
+
+.amenities-checkbox-grid input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--dash-accent);
+    cursor: pointer;
 }
 
 .upload-dropzone {

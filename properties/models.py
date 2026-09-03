@@ -1,5 +1,17 @@
 from django.db import models
 from django.utils.text import slugify
+from django.conf import settings
+from django.core.files.storage import default_storage
+
+
+def select_video_storage():
+    if getattr(settings, 'CLOUDINARY_URL', None):
+        try:
+            from cloudinary_storage.storage import VideoMediaCloudinaryStorage
+            return VideoMediaCloudinaryStorage()
+        except Exception:
+            pass
+    return default_storage
 
 
 class Amenity(models.Model):
@@ -103,14 +115,23 @@ class PropertyImage(models.Model):
         return f"Image for {self.property.title}"
 
 
+
+
+
 class PropertyVideo(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='videos')
-    video = models.FileField(upload_to='properties/videos/')
+    video = models.FileField(upload_to='properties/videos/', storage=select_video_storage, blank=True, null=True)
+    video_url = models.URLField(max_length=500, blank=True, null=True, help_text="Direct Cloudinary, YouTube, or MP4 video URL")
     title = models.CharField(max_length=150, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Video for {self.property.title}"
+
+    def get_video_url(self):
+        if self.video:
+            return self.video.url
+        return self.video_url or ""
 
 
 class SiteSettings(models.Model):

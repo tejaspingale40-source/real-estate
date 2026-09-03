@@ -110,14 +110,23 @@
             <!-- PROPERTY VIDEO -->
             {% if videos %}
             <div class="content-block card shadow-sm margin-top-md">
-                <h2 class="block-title">Property Video Tour</h2>
+                <h2 class="block-title">🎬 Property Video Tour</h2>
                 {% for vid in videos %}
-                <div class="video-player-box margin-bottom-sm">
-                    <h4>{{ vid.title|default:"Walkthrough Video" }}</h4>
-                    <video controls width="100%" class="rounded-video">
-                        <source src="{{ vid.video.url }}" type="video/mp4">
-                        Your browser does not support HTML video playback.
-                    </video>
+                <div class="video-player-box margin-bottom-md p-3 border rounded-3 bg-light">
+                    <h4 class="h5 fw-bold mb-3">{{ vid.title|default:"Walkthrough Video Tour" }}</h4>
+                    {% if vid.get_video_url %}
+                        {% if 'youtube.com' in vid.get_video_url or 'youtu.be' in vid.get_video_url %}
+                        <div class="ratio ratio-16x9 rounded-3 overflow-hidden shadow-sm">
+                            <iframe src="{{ vid.get_video_url }}" allowfullscreen class="w-100"></iframe>
+                        </div>
+                        {% else %}
+                        <video controls width="100%" class="rounded-3 shadow-sm style-video" preload="metadata" style="max-height: 480px; background: #000;">
+                            <source src="{{ vid.get_video_url }}" type="video/mp4">
+                            <source src="{{ vid.get_video_url }}" type="video/webm">
+                            Your browser does not support HTML video playback.
+                        </video>
+                        {% endif %}
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>

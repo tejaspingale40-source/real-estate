@@ -211,13 +211,47 @@ def dashboard_property_list(request):
     return render(request, 'dashboard/property_list.html', {'properties': properties})
 
 
+def ensure_default_amenities():
+    if not Amenity.objects.exists():
+        default_list = [
+            ("Parking", "fa-parking"),
+            ("Garden", "fa-tree"),
+            ("Security", "fa-shield"),
+            ("Water Supply", "fa-tint"),
+            ("Electricity", "fa-bolt"),
+            ("Road Access", "fa-road"),
+            ("Gym", "fa-dumbbell"),
+            ("Swimming Pool", "fa-swimming-pool"),
+            ("Lift", "fa-elevator"),
+            ("Power Backup", "fa-plug"),
+            ("CCTV Security", "fa-video"),
+            ("Club House", "fa-users"),
+            ("Children Play Area", "fa-child"),
+        ]
+        for name, icon in default_list:
+            Amenity.objects.get_or_create(name=name, defaults={'icon': icon})
+
+
 @staff_member_required(login_url='dashboard_login')
 def dashboard_property_add(request):
+    ensure_default_amenities()
     if request.method == 'POST':
         form = PropertyForm(request.POST, request.FILES)
         if form.is_valid():
             property_obj = form.save()
             
+            # Process custom amenities
+            custom_amenities_raw = request.POST.get('custom_amenities', '').strip()
+            if custom_amenities_raw:
+                new_amenities = []
+                for item in custom_amenities_raw.split(','):
+                    clean_name = item.strip()
+                    if clean_name:
+                        amenity_obj, _ = Amenity.objects.get_or_create(name=clean_name)
+                        new_amenities.append(amenity_obj)
+                if new_amenities:
+                    property_obj.amenities.add(*new_amenities)
+
             # Process uploaded images (multiple files support)
             images = request.FILES.getlist('images')
             for index, img in enumerate(images):
@@ -228,20 +262,22 @@ def dashboard_property_add(request):
                     order=index
                 )
 
-            # Process uploaded video
+            # Process uploaded video or video URL
             video_file = request.FILES.get('video')
-            if video_file:
-                video_title = request.POST.get('video_title', property_obj.title + " Video")
+            video_url = request.POST.get('video_url', '').strip()
+            if video_file or video_url:
+                video_title = request.POST.get('video_title', '').strip() or f"{property_obj.title} Video"
                 PropertyVideo.objects.create(
                     property=property_obj,
-                    video=video_file,
+                    video=video_file if video_file else None,
+                    video_url=video_url if video_url else None,
                     title=video_title
                 )
 
             messages.success(request, f"Property '{property_obj.title}' created successfully!")
             return redirect('dashboard_properties')
         else:
-            messages.error(request, "Failed to create property. Please check the form errors.")
+            messages.error(request, "Failed to create property. Please check form errors.")
     else:
         form = PropertyForm()
 
@@ -255,12 +291,25 @@ def dashboard_property_add(request):
 
 @staff_member_required(login_url='dashboard_login')
 def dashboard_property_edit(request, pk):
+    ensure_default_amenities()
     property_obj = get_object_or_404(Property, pk=pk)
     if request.method == 'POST':
         form = PropertyForm(request.POST, request.FILES, instance=property_obj)
         if form.is_valid():
             property_obj = form.save()
             
+            # Process custom amenities
+            custom_amenities_raw = request.POST.get('custom_amenities', '').strip()
+            if custom_amenities_raw:
+                new_amenities = []
+                for item in custom_amenities_raw.split(','):
+                    clean_name = item.strip()
+                    if clean_name:
+                        amenity_obj, _ = Amenity.objects.get_or_create(name=clean_name)
+                        new_amenities.append(amenity_obj)
+                if new_amenities:
+                    property_obj.amenities.add(*new_amenities)
+
             # Process new images if uploaded
             images = request.FILES.getlist('images')
             if images:
@@ -273,13 +322,15 @@ def dashboard_property_edit(request, pk):
                         order=existing_count + index
                     )
 
-            # Process new video if uploaded
+            # Process new video if uploaded or URL provided
             video_file = request.FILES.get('video')
-            if video_file:
-                video_title = request.POST.get('video_title', property_obj.title + " Video")
+            video_url = request.POST.get('video_url', '').strip()
+            if video_file or video_url:
+                video_title = request.POST.get('video_title', '').strip() or f"{property_obj.title} Video"
                 PropertyVideo.objects.create(
                     property=property_obj,
-                    video=video_file,
+                    video=video_file if video_file else None,
+                    video_url=video_url if video_url else None,
                     title=video_title
                 )
 
@@ -326,6 +377,16 @@ def dashboard_property_image_delete(request, pk):
                 next_image.save()
                 
         messages.success(request, "Image deleted successfully.")
+    return redirect('dashboard_property_edit', pk=property_id)
+
+
+@staff_member_required(login_url='dashboard_login')
+def dashboard_property_video_delete(request, pk):
+    video_obj = get_object_or_404(PropertyVideo, pk=pk)
+    property_id = video_obj.property.id
+    if request.method == 'POST':
+        video_obj.delete()
+        messages.success(request, "Video deleted successfully.")
     return redirect('dashboard_property_edit', pk=property_id)
 
 

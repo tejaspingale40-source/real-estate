@@ -26,6 +26,7 @@ urlpatterns = [
     path('dashboard/properties/<int:pk>/edit/', prop_views.dashboard_property_edit, name='dashboard_property_edit'),
     path('dashboard/properties/<int:pk>/delete/', prop_views.dashboard_property_delete, name='dashboard_property_delete'),
     path('dashboard/properties/images/<int:pk>/delete/', prop_views.dashboard_property_image_delete, name='dashboard_property_image_delete'),
+    path('dashboard/properties/videos/<int:pk>/delete/', prop_views.dashboard_property_video_delete, name='dashboard_property_video_delete'),
     
     # Enquiries Dashboard routes
     path('', include('enquiries.urls')),
