@@ -161,8 +161,19 @@
         gap: 16px;
     }
 
+    .property-detail-title {
+        font-size: 1.6rem !important;
+        word-break: break-word;
+    }
+
+    .property-detail-location {
+        font-size: 0.95rem !important;
+        word-break: break-word;
+    }
+
     .price-tag {
         text-align: left;
+        font-size: 1.8rem !important;
     }
 
     .main-image-container {
@@ -176,6 +187,40 @@
 
     .amenities-grid {
         grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    }
+
+    /* Property Detail Page Mobile Polish */
+    .property-detail-header {
+        padding: 24px 0 !important;
+    }
+
+    .detail-main-content .card,
+    .detail-sidebar .card {
+        padding: 16px !important;
+    }
+
+    .google-map-wrapper iframe {
+        height: 280px !important;
+    }
+
+    .gallery-wrapper {
+        padding: 10px !important;
+    }
+
+    .thumbnail-item {
+        width: 75px !important;
+        height: 55px !important;
+        flex-shrink: 0;
+    }
+
+    .sticky-sidebar {
+        position: static !important;
+    }
+
+    .agent-enquiry-form .btn {
+        font-size: 0.9rem !important;
+        padding: 10px 14px !important;
+        word-break: break-word;
     }
 
     /* Modal adjustments */
@@ -232,6 +277,38 @@
 
     .card-title {
         font-size: 1.05rem;
+    }
+
+    .specs-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+    }
+
+    .spec-item {
+        background: #f8fafc;
+        padding: 8px;
+        border-radius: 6px;
+    }
+
+    .spec-label {
+        font-size: 0.72rem !important;
+    }
+
+    .spec-value {
+        font-size: 0.88rem !important;
+        word-break: break-word;
+    }
+
+    .property-detail-title {
+        font-size: 1.35rem !important;
+    }
+
+    .price-tag {
+        font-size: 1.5rem !important;
+    }
+
+    .main-image-container {
+        height: 210px !important;
     }
 
     .toast {
