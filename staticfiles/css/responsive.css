@@ -102,22 +102,24 @@
 
     /* About Section Mobile Polish */
     .about-hero-img {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         display: flex;
         justify-content: center;
+        width: 100%;
     }
 
     .about-hero-img > div {
-        max-width: 240px !important;
-        width: 240px !important;
-        border-width: 2px !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        border-width: 3px !important;
         border-radius: 16px !important;
     }
 
     .about-hero-img img {
-        max-height: 250px !important;
-        height: 250px !important;
-        object-fit: cover !alignment: top center;
+        max-height: none !important;
+        height: auto !important;
+        width: 100% !important;
+        object-fit: cover !important;
     }
 
     .about-hero-img .p-3 {
