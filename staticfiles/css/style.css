@@ -654,6 +654,13 @@ img {
     display: grid;
     grid-template-columns: 1fr 380px;
     gap: 40px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.detail-main-content, .detail-sidebar {
+    min-width: 0;
+    max-width: 100%;
 }
 
 .card {

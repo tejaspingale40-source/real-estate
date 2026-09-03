@@ -192,19 +192,50 @@
     /* Property Detail Page Mobile Polish */
     .property-detail-header {
         padding: 24px 0 !important;
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    .detail-layout-grid {
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 24px !important;
+    }
+
+    .detail-main-content, .detail-sidebar {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden;
     }
 
     .detail-main-content .card,
     .detail-sidebar .card {
         padding: 16px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .breadcrumb {
+        word-break: break-word;
+        font-size: 0.82rem !important;
+    }
+
+    .google-map-wrapper {
+        max-width: 100% !important;
+        overflow: hidden !important;
     }
 
     .google-map-wrapper iframe {
-        height: 280px !important;
+        height: 250px !important;
+        max-width: 100% !important;
     }
 
     .gallery-wrapper {
         padding: 10px !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
     }
 
     .thumbnail-item {
@@ -221,6 +252,7 @@
         font-size: 0.9rem !important;
         padding: 10px 14px !important;
         word-break: break-word;
+        max-width: 100% !important;
     }
 
     /* Modal adjustments */
