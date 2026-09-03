@@ -99,6 +99,38 @@
         grid-template-columns: 1fr !important;
         gap: 30px !important;
     }
+
+    /* About Section Mobile Polish */
+    .about-hero-img {
+        margin-bottom: 10px;
+    }
+
+    .about-hero-img > div {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    .about-hero-img img {
+        max-height: 360px !important;
+    }
+
+    .about-hero-text .section-title {
+        font-size: 1.65rem !important;
+        line-height: 1.25;
+    }
+
+    .about-hero-text .lead {
+        font-size: 0.98rem !important;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+
+    .feature-card {
+        padding: 22px 18px !important;
+    }
 }
 
 /* Small Tablets & Mobile Phones (max-width: 768px) */
