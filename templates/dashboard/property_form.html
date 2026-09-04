@@ -169,10 +169,11 @@
                             <div class="form-group col-full">
                                 <label>Option A: Upload Video File (MP4, WebM, MOV)</label>
                                 <input type="file" name="video" id="videoInput" accept="video/mp4,video/webm,video/quicktime,video/*" class="form-control">
+                                <div id="videoFileInfo" class="mt-2 text-muted small" style="display: none; padding: 8px 12px; background: #f8fafc; border-radius: 6px; border: 1px dashed #cbd5e1;"></div>
                             </div>
                             <div class="form-group col-full">
                                 <label>Option B: Cloudinary / Direct Video / YouTube URL</label>
-                                <input type="url" name="video_url" class="form-control" placeholder="https://res.cloudinary.com/your-cloud-name/video/upload/sample.mp4">
+                                <input type="url" name="video_url" class="form-control" placeholder="https://res.cloudinary.com/your-cloud-name/video/upload/sample.mp4 or https://youtube.com/watch?v=...">
                             </div>
                             <div class="form-group col-full">
                                 <label>Video Title</label>
@@ -217,12 +218,21 @@
                     </div>
 
                     <div class="form-actions margin-top-xl">
-                        <button type="submit" class="btn btn-primary btn-lg">💾 Save Property</button>
+                        <button type="submit" id="savePropertyBtn" class="btn btn-primary btn-lg">💾 Save Property</button>
                         <a href="{% url 'dashboard_properties' %}" class="btn btn-secondary btn-lg">Cancel</a>
                     </div>
                 </form>
             </div>
         </main>
+    </div>
+
+    <!-- Upload Progress Modal Overlay -->
+    <div id="uploadProgressOverlay" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; text-align: center; color: white;">
+        <div style="background: white; color: #0f172a; padding: 2.5rem; border-radius: 16px; max-width: 450px; width: 90%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+            <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem; border-width: 4px;" role="status"></div>
+            <h4 class="fw-bold mb-2" id="uploadOverlayTitle">Saving Property Data...</h4>
+            <p class="text-muted small mb-0" id="uploadOverlayMessage">Uploading video and saving changes. Please do not close or refresh this page.</p>
+        </div>
     </div>
 
     <script src="{% static 'js/dashboard.js' %}"></script>

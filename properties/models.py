@@ -130,8 +130,27 @@ class PropertyVideo(models.Model):
 
     def get_video_url(self):
         if self.video:
-            return self.video.url
+            try:
+                return self.video.url
+            except Exception:
+                pass
         return self.video_url or ""
+
+    def is_youtube(self):
+        url = self.get_video_url()
+        return bool(url and ('youtube.com' in url or 'youtu.be' in url))
+
+    def get_embed_url(self):
+        url = self.get_video_url()
+        if not url:
+            return ""
+        if 'youtube.com/watch?v=' in url:
+            video_id = url.split('watch?v=')[1].split('&')[0]
+            return f"https://www.youtube.com/embed/{video_id}"
+        elif 'youtu.be/' in url:
+            video_id = url.split('youtu.be/')[1].split('?')[0]
+            return f"https://www.youtube.com/embed/{video_id}"
+        return url
 
 
 class SiteSettings(models.Model):

@@ -115,16 +115,22 @@
                 <div class="video-player-box margin-bottom-md p-3 border rounded-3 bg-light">
                     <h4 class="h5 fw-bold mb-3">{{ vid.title|default:"Walkthrough Video Tour" }}</h4>
                     {% if vid.get_video_url %}
-                        {% if 'youtube.com' in vid.get_video_url or 'youtu.be' in vid.get_video_url %}
+                        {% if vid.is_youtube %}
                         <div class="ratio ratio-16x9 rounded-3 overflow-hidden shadow-sm">
-                            <iframe src="{{ vid.get_video_url }}" allowfullscreen class="w-100"></iframe>
+                            <iframe src="{{ vid.get_embed_url }}" allowfullscreen class="w-100" style="border:0;"></iframe>
                         </div>
                         {% else %}
-                        <video controls width="100%" class="rounded-3 shadow-sm style-video" preload="metadata" style="max-height: 480px; background: #000;">
-                            <source src="{{ vid.get_video_url }}" type="video/mp4">
-                            <source src="{{ vid.get_video_url }}" type="video/webm">
-                            Your browser does not support HTML video playback.
-                        </video>
+                        <div class="position-relative rounded-3 overflow-hidden shadow-sm bg-black">
+                            <video src="{{ vid.get_video_url }}" controls playsinline preload="metadata" style="width: 100%; max-height: 480px; display: block; object-fit: contain;">
+                                <source src="{{ vid.get_video_url }}">
+                                Your browser does not support HTML video playback.
+                            </video>
+                        </div>
+                        <div class="mt-2 text-end">
+                            <a href="{{ vid.get_video_url }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-secondary">
+                                🔗 Open Video in New Tab
+                            </a>
+                        </div>
                         {% endif %}
                     {% endif %}
                 </div>
